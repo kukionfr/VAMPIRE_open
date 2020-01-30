@@ -1,0 +1,1 @@
+from .vampire import vampire

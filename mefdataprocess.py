@@ -15,6 +15,7 @@ for mat in matlist:
     matbd = matbd['bd']
     df = pd.DataFrame(matbd)
     df.to_pickle(os.path.join(*[pth,filename+'.pickle']))
+    print('hi')
 #mat2 = loadmat(r'\\babyserverdw4\Pei-Hsun Wu\digital pathology image data\Skin Tissue - Kyu\MAT\vampiredata\rest_18.mat')['restbd']
 #df2 = pd.DataFrame(mat2)
 #df3 = pd.concat([df,df2],ignore_index=True)

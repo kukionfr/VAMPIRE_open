@@ -3,47 +3,39 @@
 # internal libraries
 from __future__ import division
 from copy import deepcopy
-# from inspect import getargspec
 import time
 import os
 from tkinter import END
-from time import sleep
+from datetime import datetime
 # external libraries
 import numpy as np
 from scipy import stats, cluster, spatial
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn import preprocessing, metrics
+from sklearn.cluster import KMeans
+from sklearn import preprocessing
 import matplotlib as mpl
 mpl.use("TkAgg")
 from matplotlib import pyplot as plt
 
 
-def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=None, BuildModel=None, ch=None,
-              condition=None, entries=None):
+def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=None,
+              condition=None,setID=None, entries=None):
+    realtimedate = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    start = time.time()
     print('# clusterSM')
-    csvdir = os.path.dirname(csv)
-    figdst = os.path.join(csvdir, modelname)
+    if not isinstance(condition, str):
+        condition = str(condition)
     if BuildModel:
-        figdst = os.path.join(figdst, 'Model for ' + ch)
+        figdst = os.path.join(*[outpth, entries['Model name'].get(), 'Example model figures'])
     else:
-        figdst = modelname
+        figdst = os.path.join(outpth, 'Result based on ' + os.path.splitext(os.path.basename(entries['Model to apply'].get()))[0])
     if not os.path.exists(figdst):
         try:
             os.makedirs(figdst)
         except:
             entries['Status'].delete(0, END)
-            entries['Status'].insert(0, 'Please fill in model name correctly')
-
-    Nuu = int(round(len(bdpc.T[0])))
-    Nbb = int(round(len(bdpc[0]) / 2))
-    mmx = np.dot(np.ones([Nuu, 1]), np.mean([bdpc], axis=1))
-    smx = np.ones(bdpc.shape)
-    mdd = mmx[0]
-    sdd = smx[0]
+            entries['Status'].insert(0, 'Please choose the right folder')
     NN = 10
 
-    if clnum is None:
-        clnum = 15
     if pcnum is None:
         pcnum = 20
 
@@ -53,7 +45,6 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
     else:
         clnum = VamModel['clnum']
         pcnum = VamModel['pcnum']
-        pc = VamModel['pc']
 
     cms00 = score[:, 0:pcnum]
     cms = deepcopy(cms00)
@@ -74,11 +65,9 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
             test[test < 0] = 0.000000000001
             test, maxlog = stats.boxcox(test)
             test = np.asarray(test)
-            #####################
             VamModel['boxcoxlambda'][k] = maxlog
             VamModel['testmean'][k] = np.mean(test)
             VamModel['teststd'][k] = np.std(test)
-            #####################
             cms.T[k] = (test - np.mean(test)) / np.std(test)
         else:
             test[test < 0] = 0.000000000001
@@ -98,81 +87,7 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
         VamModel['C'] = C
         D = spatial.distance.cdist(cmsn, C, metric='euclidean')
         IDX = np.argmin(D, axis=1)
-        unique_labels2 = set(IDX)
         IDX_dist = np.amin(D, axis=1)
-        inertia = [np.around(np.sum(np.square(IDX_dist[IDX == _])) / len(IDX_dist[IDX == _]), decimals=2) for _ in
-                   range(clnum)]
-
-        # eps = max dist btw two points in a neighbor; min_sample = min data points to consider it as a neighbor
-        # n_jobs = -1 for all processors; algorithm = ball_tree, kd_tree, brute
-        #db = DBSCAN(eps=0.4, min_samples=5, algorithm='auto', leaf_size=30, n_jobs=-1).fit(cmsn_Norm)
-        # samples with labels that are in core
-        #core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-        #core_samples_mask[db.core_sample_indices_] = True
-        #labels = db.labels_
-        #n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-        #n_noise = list(labels).count(-1)
-        #print('Estimated number of clusters: %d' % n_clusters)
-        #print('Estimated number of noise points: %d' % n_noise)
-        # Black removed and is used for noise instead.
-        #unique_labels = set(labels)
-        #colors = [plt.cm.Spectral(each)
-        #          for each in np.linspace(0, 1, len(unique_labels))]
-        #colors2 = [plt.cm.Spectral(each2)
-        #          for each2 in np.linspace(0, 1, len(unique_labels2))]
-        #fig1, ax1 = plt.subplots()
-        #fig2, ax2 = plt.subplots()
-        #for k, col in zip(unique_labels, colors):
-        #    if k == -1:
-                # Black used for noise.
-        #        col = [0, 0, 0, 1]
-
-         #   class_member_mask = (labels == k)
-
-         #   xy = cmsn_Norm[class_member_mask & core_samples_mask]
-         #   ax1.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
-         #            markeredgecolor='k', markersize=14)
-
-        #    xy = cmsn_Norm[class_member_mask & ~core_samples_mask]
-         #   ax1.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
-        #             markeredgecolor='k', markersize=6)
-
-        #for j, col in zip(unique_labels2,colors2):
-        #    class_member_mask2 = (IDX == j)
-        #    xy = cmsn_Norm[class_member_mask2]
-        #    ax2.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
-        #             markeredgecolor='k', markersize=6)
-        #ax1.set_title('BDscan - Estimated number of clusters: %d' % n_clusters)
-        #ax2.set_title('K-means - Set number of clusters: %d' % clnum)
-
-        #db2 = DBSCAN(eps=0.5, min_samples=5, algorithm='auto', leaf_size=30, n_jobs=-1).fit(cmsn_Norm)
-        #core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-        #core_samples_mask[db.core_sample_indices_] = True
-        #labels = db.labels_
-        #n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-        #n_noise = list(labels).count(-1)
-        #print('Estimated number of clusters: %d' % n_clusters)
-        #print('Estimated number of noise points: %d' % n_noise)
-        #unique_labels = set(labels)
-        #colors = [plt.cm.Spectral(each)
-        #          for each in np.linspace(0, 1, len(unique_labels))]
-        #fig3, ax3 = plt.subplots()
-        #for k2, col2 in zip(unique_labels, colors):
-        #    if k2 == -1:
-        #        # Black used for noise.
-        #        col2 = [0, 0, 0, 1]
-
-         #   class_member_mask = (labels == k)
-
-         #   xy = cmsn_Norm[class_member_mask & core_samples_mask]
-         #   ax3.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col2),
-         #            markeredgecolor='k', markersize=14)
-
-   #xy = cmsn_Norm[class_member_mask & ~core_samples_mask]
-    #        ax3.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col2),
-     #                markeredgecolor='k', markersize=6)
-     #  plt.show()
-        #sleep(1000)
     else:
         if isinstance(clnum, str):
             clnum = int(clnum)
@@ -181,8 +96,6 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
         # why amin? D shows list of distance to cluster centers.
         IDX = np.argmin(D, axis=1)
         IDX_dist = np.around(np.amin(D, axis=1), decimals=2)
-        inertia = [np.around(np.sum(np.square(IDX_dist[IDX == _])) / len(IDX_dist[IDX == _]), decimals=2) for _ in
-                   range(clnum)]
 
     offx, offy = np.meshgrid(range(clnum), [0])
     offx = np.multiply(offx, 1) + 1
@@ -190,13 +103,6 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
     offy = np.subtract(np.multiply(offy, 1), 1.5) + 1
     offy = offy[0]
     # define normalized colormap
-    cmap = plt.cm.jet
-    vmax = int(clnum * 10)
-    norm = mpl.colors.Normalize(vmin=0, vmax=vmax)
-    cid = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
-
-    clshape = np.zeros([clnum, len(cms00[0])])
-    clshapesdv = deepcopy(clshape)
     bdst0 = np.empty(len(bdpc.T))
     bdst = deepcopy(bdst0)
     for kss in range(clnum):
@@ -230,34 +136,11 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
         c88 = IDX == int(dendidx[kss])
         IDXsort[c88] = kss
     IDX = deepcopy(IDXsort)
-    bdsubtype = np.empty(
-        (int(max(IDX) + 1), 2, Nbb + 1))  # need more specific preallocation: 2 for x and y, Nbb+1 for len(x)
     fig922, ax922 = plt.subplots(figsize=(17, 2))
     fig291, ax291 = plt.subplots(figsize=(6, 3))
     for kss in range(int(max(IDX)) + 1):
         c88 = IDXsort == kss
-        # clshape[kss] = np.mean(cms00[c88], axis=0)
-        # clshapesdv[kss] = np.std(cms00[c88], axis=0)
-        # pnn = np.zeros(len(pc.T[0]))
-        # for kev in range(len(cms00[0])):
-        #     pnn = np.add(pnn, np.multiply(pc.T[kev], clshape[kss, kev]))
-        #     pnnlb = np.add(pnn, np.multiply(np.multiply(pc.T[kev], -2), clshapesdv[kss, kev]))
-        #     pnnhb = np.add(pnn, np.multiply(np.multiply(pc.T[kev], 2), clshapesdv[kss, kev]))
-        # pnn = np.multiply(pnn, sdd) + mdd
-        # pnnlb = np.multiply(pnnlb, sdd) + mdd
-        # pnnhb = np.multiply(pnnhb, sdd) + mdd  # pnn,pnnlb&hb are all randomized
-        # xx = pnn[0:Nbb]
-        # yy = pnn[Nbb:]
-        # xx = np.append(xx, xx[0])
-        # yy = np.append(yy, yy[0])
         fss = 4
-        # # this plots what? figeach together?
-        # ax291.plot((xx / fss + offx.T[kss]) * 10, (yy / fss + offy.T[kss]) * 10, '-', color=cid.to_rgba(kss),
-        #            linewidth=5)  # this is not plotted in matlab as well
-        # plt.axis('equal')
-        #
-        # bdsubtype[kss][0] = xx / fss
-        # bdsubtype[kss][1] = yy / fss
         bdpcs = bdpc[c88]
         mbd = np.mean(bdpcs, axis=0)
         bdNUM = int(round(len(mbd) / 2))
@@ -267,7 +150,6 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
         plt.clf()
 
         ax289.plot(xaxis, yaxis, '-', linewidth=2)  # this is the shape of the dendrogram
-        # plt.gca().invert_yaxis()
         plt.axis('equal')
         plt.axis('off')
 
@@ -282,13 +164,18 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
             xax = np.add(np.divide(x99, fss), offx[kss])
             yax = np.add(np.divide(y99, fss), offy[kss])
             ax922.plot(xax, yax, 'r-', linewidth=1)
+            ax922.axis('equal')
             ax922.axis('off')
-    bdst = bdst[1:]
     if BuildModel:
-        fig922.savefig(os.path.join(figdst, "Registered objects " + ch + ".png"), format='png', transparent=True)
-        # fig922.savefig(os.path.join(figdst,"Registered objects "+ch+".svg"),format='svg',transparent=True)
-        fig289.savefig(os.path.join(figdst, "Shape mode dendrogram " + ch + ".png"), format='png', transparent=True)
-        # fig289.savefig(os.path.join(figdst,"Shape mode dendrogram "+ch+".svg"),format='svg',transparent=True)
+        ax922.set_ylim(ax922.get_ylim()[::-1])
+        if os.path.exists(os.path.join(figdst, "Registered objects.png")):
+            f1 = os.path.join(figdst, "Registered objects "+realtimedate+".png")
+            f2 = os.path.join(figdst, "Shape mode dendrogram.png "+realtimedate+".png")
+        else:
+            f1 = os.path.join(figdst, "Registered objects.png")
+            f2 = os.path.join(figdst, "Shape mode dendrogram.png")
+        fig922.savefig(f1, format='png', transparent=True)
+        fig289.savefig(f2, format='png', transparent=True)
 
     IDX = IDX + 1
     n, bins, patches = plt.hist(IDX, bins=range(clnum + 2)[1:])
@@ -297,41 +184,31 @@ def clusterSM(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=
     n = np.multiply(n, 100)
     n = np.around(n, 2)
     height = n
-    ax22.bar(x=(np.delete(bins, 0) - 1) / 2, height=height, width=0.4, align='center', color=(0.2, 0.4, 0.6, 0.6),
+    ax22.bar(x=(np.delete(bins, 0) - 1) / 2, height=height, width=0.4, align='center', color=(0.2, 0.4, 0.6, 1),
              edgecolor='black')
-
-    ax22.set_ylabel('Abundance %')
-    ax22.set_xlabel('Shape mode')
+    ax22.set_ylabel('Abundance %', fontsize=15, fontweight='bold')
+    ax22.set_xlabel('Shape mode', fontsize=15, fontweight='bold')
     # only for paper
-    ax22.set_ylim([0,30])
-    ax22.set_title('Shape mode distribution (N=' + str(len(IDX_dist)) + ')')
+    ax22.set_ylim([0,np.max(height)+5])
+    ax22.set_title('Shape mode distribution (N=' + str(len(IDX_dist)) + ')',fontsize=18, fontweight='bold')
     bartick = map(str, np.arange(int(np.max(IDX) + 1))[1:])
     ax22.set_xticks((np.arange(np.max(IDX) + 1) / 2)[1:])
-    ax22.set_xticklabels(tuple(bartick))
-
+    ax22.set_xticklabels(tuple(bartick), fontsize=13, fontweight='bold')
+    ax22.yaxis.set_tick_params(labelsize=13)
+    plt.setp(ax22.get_yticklabels(), fontweight="bold")
     for i, v in enumerate(height):
-        ax22.text((i - 0.3 + 1) / 2, v + 0.25, str(np.around(v, decimals=1)), color='black', fontweight='bold')
+        ax22.text((i - 0.25 + 1) / 2, v + 0.25, str(np.around(v, decimals=1)), color='black', fontweight='bold', fontsize=13)
     for axis in ['top', 'bottom', 'left', 'right']:
         ax22.spines[axis].set_linewidth(3)
-
     if not BuildModel:
-        fig22.savefig(os.path.join(figdst, 'shape mode distribution_' + ch + '_' + condition + '.png'), format='png',
-                      transparent=True)
-        # fig22.savefig(os.path.join(figdst,'shape mode distribution_'+ch+'_'+condition+'.svg'),format='svg',transparent=True)
-
+        if os.path.exists(os.path.join(figdst, 'Shape mode distribution_'+ setID + '_' + condition + '.png')):
+            f3 = os.path.join(figdst, 'Shape mode distribution_'+ setID + '_' + condition +'_'+realtimedate+'.png')
+        else:
+            f3 = os.path.join(figdst, 'Shape mode distribution_'+ setID + '_' + condition + '.png')
+        fig22.savefig(f3, format='png', transparent=True)
     plt.close('all')
-    return IDX, IDX_dist, bdsubtype, C, VamModel, height, inertia
-
-
-def cluster_main(csv, modelname, score, pc, bdpc, clnum=None, pcnum=None, VamModel=None, BuildModel=None,
-                 cellornuc=None, condition=None, entries=None):
-    print('## clusterSM.py')
-    start = time.time()
-    if not isinstance(condition, str):
-        condition = str(condition)
-    IDX, IDX_dist, bdsubtype, C, VamModel, height, inertia = clusterSM(csv, modelname, score, pc, bdpc, clnum, pcnum,
-                                                                       VamModel, BuildModel, cellornuc, condition,
-                                                                       entries)
     end = time.time()
     print('For cluster, elapsed time is ' + str(end - start) + 'seconds...')
-    return IDX, IDX_dist, bdsubtype, C, VamModel, height, inertia
+    return IDX, IDX_dist, VamModel
+
+

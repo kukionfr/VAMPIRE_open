@@ -25,5 +25,5 @@
         
 4. Instructions for use
 
-    Instructions to run on data can be found in the Procedure section of the manuscript
+    Instructions to run on data can be found in the Procedure section of the manuscript.
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.

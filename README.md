@@ -1,5 +1,5 @@
 # VAMPIRE (Visually Aided Morpho-Phenotyping Image Recognition)
-# A robust method to quantify cell morphological heterogeneity 
+**A robust method to quantify cell morphological heterogeneity**
 
 1. System requirements
     OS : Windows 10 (64 bit) Version 1909

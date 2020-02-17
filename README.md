@@ -8,7 +8,7 @@
     
 2. Installation Guide\
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
-    It takes 20 seconds or less to initialize and launch the GUI.
+    Executable file is named "vampire.exe". It is located in "Compiled Standalone Software" folder.
     
 3. Demo
     Instructions to run on data can be found in the Procedure section of the manuscript.\

@@ -30,15 +30,9 @@ def reg_bd3(bd0=None, bdr0=None):
         idk = np.append(range(k, N + 1), range(1, k))
         bdt = np.empty([len(idk), 2])
         bdt[:] = np.nan
-        # print(idk)
-        # print(bd)
         for i in range(len(bd.transpose())):
             ind = int(idk[i] - 1)
             bdt[i] = bd.transpose()[ind]
-        # print(bd.T)
-        # bdt = np.roll(bd.T, k)
-        # print(bdt)
-        #sleep(20)
         temp = np.dot(bdr, bdt)
         u, _, v = np.linalg.svd(temp)
         v = v.T
@@ -49,10 +43,8 @@ def reg_bd3(bd0=None, bdr0=None):
             bdout = deepcopy(bdtemp)
             costold = deepcopy(costnew)
 
-
     regbd = deepcopy(bdout.T)
     regbd[:] = np.nan
     regbd[0] = deepcopy(bdout.T[1])
     regbd[1] = deepcopy(bdout.T[0])
-    # ytot = costold.T
     return regbd

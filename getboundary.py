@@ -12,10 +12,10 @@ import pandas as pd
 from skimage import measure
 
 
-def createimstack(ch, setfolder):
+def createimstack(tag,setfolder):
     ext = ['.tiff', '.tif', '.jpeg', '.jpg', '.png', '.bmp', '.gif']
     imlist = [_ for _ in os.listdir(setfolder) if _.lower().endswith(tuple(ext))]
-    imlist = [_ for _ in imlist if ch.lower() in _.lower()]
+    imlist = [_ for _ in imlist if tag.lower() in _.lower()]
     imlist = sorted(imlist)
     imlistpath = [os.path.join(setfolder, _) for _ in imlist]
     imstack = [np.array(Image.open(im)) for im in imlistpath]
@@ -48,73 +48,70 @@ def getboundary(csv, progress_bar, entries):
     setpaths = ui['set location']
     # iterate through image set
     for setfolderidx, setfolder in enumerate(setpaths):
-        ch1 = ui['ch1'][setfolderidx]
-        ch2 = ui['ch2'][setfolderidx]
-        # iterate through nuclei and cell
-        for chidx, ch in enumerate([ch1, ch2]):
-            registry = []
-            registry_dst = os.path.join(setfolder, ch + '_registry.csv')
-            boundarymaster = []
-            boundarydst = os.path.join(setfolder, ch + '_boundary_coordinate_stack.pickle')
-            if os.path.exists(registry_dst):
-                print('registry or boundary already exist')
-                continue
-            imstack, imlistpath, imlist = createimstack(ch, setfolder)
-            try:
-                inputim = check_label_status(imstack[0])  # intensity label in greyscale
-            except:
-                entries['Status'].delete(0, END)
-                entries['Status'].insert(0, 'error: update your CSV file')
-                return
-            if inputim is not 'labeled':
-                s = generate_binary_structure(2, 2)
-                imstack = [label(im, structure=s)[0] for im in imstack]
-            # iterate through labeled greyscale image
-            for imidx, im in enumerate(imstack):
-                labels = list(set(im.flatten()))[1:]
-                labels = sorted(labels)
-                # iterate through labeled object in image
-                for objidx, lab in enumerate(labels):
-                    mask = np.array((im == lab).astype(int), dtype='uint8')
-                    boundary = mask2boundary(mask)
-                    if len(boundary) < 5:
-                        continue
+        tag = ui['tag'][setfolderidx]
+        registry = []
+        datasheet = 'VAMPIRE datasheet ' + tag + '.csv'
+        registry_dst = os.path.join(setfolder, datasheet)
+        boundarymaster = []
+        boundarydst = os.path.join(setfolder, tag + '_boundary_coordinate_stack.pickle')
+        if os.path.exists(registry_dst):
+            print('registry or boundary already exist')
+            continue
+        imstack, imlistpath, imlist = createimstack(tag,setfolder)
+        try:
+            inputim = check_label_status(imstack[0])  # intensity label in greyscale
+        except:
+            entries['Status'].delete(0, END)
+            entries['Status'].insert(0, 'error: update your CSV file')
+            return
+        if inputim is not 'labeled':
+            s = generate_binary_structure(2, 2)
+            imstack = [label(im, structure=s)[0] for im in imstack]
+        # iterate through labeled greyscale image
+        for imidx, im in enumerate(imstack):
+            labels = list(set(im.flatten()))[1:]
+            labels = sorted(labels)
+            # iterate through labeled object in image
+            for objidx, lab in enumerate(labels):
+                mask = np.array((im == lab).astype(int), dtype='uint8')
+                boundary = mask2boundary(mask)
+                if len(boundary) < 5:
+                    continue
 
-                    centroid = [int(np.around(_, 0)) for _ in center_of_mass(mask)]
-                    centroid.reverse()  # swap to correct x,y
-                    prop = measure.regionprops(mask)[0]
-                    area = prop['area']
-                    perimeter = prop['perimeter']
-                    majoraxis = prop['major_axis_length']
-                    minoraxis = prop['minor_axis_length']
-                    circularity = 4 * np.pi * area / perimeter ** 2
-                    try:
-                        ar = majoraxis / minoraxis
-                    except:
-                        ar = 0
-                    props = [area, perimeter, majoraxis, minoraxis, circularity, ar]
-                    fronttag = [imlist[imidx], imidx + 1, objidx + 1]
-                    registry_item = fronttag + centroid + props
-                    registry.append(registry_item)
-                    boundarymaster.append(boundary)
-                    progress = 100 * (objidx + 1) / len(labels) / len(imstack) / len([ch1, ch2]) / \
-                               len(setpaths) + 100 * (imidx + 1) / len(imstack) / len([ch1, ch2]) / \
-                               len(setpaths) + 100 * (chidx + 1) / len([ch1, ch2]) / \
-                               len(setpaths) + 100 * (setfolderidx + 1) / len(setpaths)
-                    progress_bar["value"] = progress / 2
-                    progress_bar.update()
-            if len(boundarymaster) != len(registry):
-                raise Exception('boundary coordinates length does not match registry length')
-            if not os.path.exists(boundarydst):
-                df = pd.DataFrame(boundarymaster)
-                df.to_pickle(boundarydst)
-                subprocess.check_call(["attrib", "+H", boundarydst])
-            if not os.path.exists(registry_dst):
-                df_registry = pd.DataFrame(registry)
-                df_registry.columns = ['Filename', 'ImageID', 'ObjectID', 'X', 'Y', 'Area', 'Perimeter',
-                                       'Major Axis', 'Minor Axis', 'Circularity', 'Aspect Ratio']
-                df_registry.index = df_registry.index + 1
-                df_registry.to_csv(os.path.join(setfolder, ch + '_registry.csv'), index=False)
+                centroid = [int(np.around(_, 0)) for _ in center_of_mass(mask)]
+                centroid.reverse()  # swap to correct x,y
+                prop = measure.regionprops(mask)[0]
+                area = prop['area']
+                perimeter = prop['perimeter']
+                majoraxis = prop['major_axis_length']
+                minoraxis = prop['minor_axis_length']
+                circularity = 4 * np.pi * area / perimeter ** 2
+                try:
+                    ar = majoraxis / minoraxis
+                except:
+                    ar = 0
+                props = [area, perimeter, majoraxis, minoraxis, circularity, ar]
+                fronttag = [imlist[imidx], imidx + 1, objidx + 1]
+                registry_item = fronttag + centroid + props
+                registry.append(registry_item)
+                boundarymaster.append(boundary)
+                progress = 100 * (objidx + 1) / len(labels) / len(imstack) /  \
+                           len(setpaths) + 100 * (imidx + 1) / len(imstack) /  \
+                           len(setpaths) + 100 * (setfolderidx + 1) / len(setpaths)
+                progress_bar["value"] = progress / 2
+                progress_bar.update()
+        if len(boundarymaster) != len(registry):
+            raise Exception('boundary coordinates length does not match registry length')
+        if not os.path.exists(boundarydst):
+            df = pd.DataFrame(boundarymaster)
+            df.to_pickle(boundarydst)
+            subprocess.check_call(["attrib", "+H", boundarydst])
+        if not os.path.exists(registry_dst):
+            df_registry = pd.DataFrame(registry)
+            df_registry.columns = ['Filename', 'ImageID', 'ObjectID', 'X', 'Y', 'Area', 'Perimeter',
+                                   'Major Axis', 'Minor Axis', 'Circularity', 'Aspect Ratio']
+            df_registry.index = df_registry.index + 1
+            df_registry.to_csv(os.path.join(setfolder, datasheet), index=False)
     entries['Status'].delete(0, END)
     entries['Status'].insert(0, 'object csv created...')
     return

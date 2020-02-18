@@ -1,4 +1,4 @@
-# VAMPIRE (Visually Aided Morpho-Phenotyping Image Recognition)
+# VAMPIRE\ (Visually Aided Morpho-Phenotyping Image Recognition)
 **A robust method to quantify cell morphological heterogeneity**
 
 1. System requirements\
@@ -8,7 +8,7 @@
     
 2. Installation Guide\
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
-    Executable file is named "vampire.exe". It is located in "Compiled Standalone Software" folder.
+    Executable file is named "vampire.exe", which can be found in Supplementary Data 2.
     
 3. Demo
     Instructions to run on data can be found in the Procedure section of the manuscript.\

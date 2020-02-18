@@ -25,8 +25,9 @@
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
 
 5. Code functionalitY\
-    The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.  To launch the GUI, type     “vampire” in the command window prompt.
-Functionality of each code:\
+    The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.\
+    To launch the GUI, typE “vampire” in the command window prompt.\
+    Functionality of each code:\
 •	vampire.py : launch Tk interface for VAMPIRE GUI.\
 •	mainbody.py : read the boundaries of cells or nuclei and process them through three key functions of VAMPIRE analysis: 1. Registration 2. PCA 3. Cluster.\
 •	collect_selected_bstack.py : read the boundaries of cells or nuclei based on the CSV files that contains list of image sets to build or apply the VAMPIRE model.\

@@ -1,4 +1,4 @@
-# VAMPIRE\ (Visually Aided Morpho-Phenotyping Image Recognition)
+# VAMPIRE \ (Visually Aided Morpho-Phenotyping Image Recognition)
 **A robust method to quantify cell morphological heterogeneity**
 
 1. System requirements\

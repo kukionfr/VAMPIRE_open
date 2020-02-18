@@ -24,7 +24,7 @@
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
 
-5. Code functionality
+5. Code functionalitY\
     The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.  To launch the GUI, type     “vampire” in the command window prompt.
 Functionality of each code:\
 •	vampire.py : launch Tk interface for VAMPIRE GUI.\

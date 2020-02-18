@@ -23,3 +23,16 @@
 4. Instructions for use
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
+
+5. Code functionality
+    The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.  To launch the GUI, type     “vampire” in the command window prompt.
+Functionality of each code:\
+•	vampire.py : launch Tk interface for VAMPIRE GUI.\
+•	mainbody.py : read the boundaries of cells or nuclei and process them through three key functions of VAMPIRE analysis: 1. Registration 2. PCA 3. Cluster.\
+•	collect_selected_bstack.py : read the boundaries of cells or nuclei based on the CSV files that contains list of image sets to build or apply the VAMPIRE model.\
+•	bdreg.py: register boundaries of cells or nuclei to eliminate rotational variance.\
+•	pca_bdreg.py : apply PCA to the registered boundaries.\
+•	PCA_custom.py  : principal component analysis code.\
+•	clusterSM.py : apply K-means clustering to PCA processed boundaries of cells or nuclei and assign the cluster number label to each cell or nuclei.\
+•	update_csv.py : generate VAMPIRE datasheet based on the assigned cluster label.\
+Codes that are not mentions here belongs to the codes explained. The provided explanation applies to those as well.

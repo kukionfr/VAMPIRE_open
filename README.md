@@ -7,8 +7,12 @@
     Non-standard hardware is not required.
     
 2. Installation Guide\
+    Executable file option:\
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
     Executable file is named "vampire.exe", which can be found in Supplementary Data 2.
+    
+    PIP installation option:\
+    pip install vampireanalysis
     
 3. Demo
     Instructions to run on data can be found in the Procedure section of the manuscript.\
@@ -24,7 +28,7 @@
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
 
-5. Code functionalitY\
+5. Code functionality\
     The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.\
     After installation using pip, type “vampire” in the command window prompt to launch the GUI.\
     

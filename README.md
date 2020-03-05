@@ -11,9 +11,12 @@
     **Executable file option:**\
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
     Executable file is named "vampire.exe", which can be found in Supplementary Data 2.\
-**PIP installation option:**
+**PIP installation option:**\
+    Type the following into command prompt window to install vampireanlysis on PYPI (the Python package index) using pip installer
     
     pip install vampireanalysis
+    
+To launch the GUI, type "vampire" into command prompt window.
     
 **3. Demo**\
     Instructions to run on data can be found in the Procedure section of the manuscript.\

@@ -78,13 +78,13 @@ def Model(entries, buildModel, progress_bar):
         csv = entries['Image sets to build'].get()
         clnum = entries['Number of shape modes'].get()
         outpth = entries['Model output folder'].get()  # name
-        # getboundary(csv, progress_bar, entries)  # create registry csv and boundary stack
+        getboundary(csv, progress_bar, entries)  # create registry csv and boundary stack
         mainbody(buildModel, csv, entries, outpth, clnum, progress_bar)
     else:
         csv = entries['Image sets to apply'].get()
         outpth = entries['Result output folder'].get()
         clnum = None
-        # getboundary(csv, progress_bar, entries)  # create registry csv and boundary stack
+        getboundary(csv, progress_bar, entries)  # create registry csv and boundary stack
         mainbody(buildModel, csv, entries, outpth, clnum, progress_bar)
     progress_bar["value"] = 100
     progress_bar.update()

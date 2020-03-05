@@ -10,12 +10,12 @@
 **2. Installation Guide**\
     **Executable file option:**\
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
-    Executable file is named "vampire.exe", which can be found in Supplementary Data 2.
+    Executable file is named "vampire.exe", which can be found in Supplementary Data 2.\
+**PIP installation option:**
     
-    **PIP installation option:**\
     pip install vampireanalysis
     
-**3. Demo**
+**3. Demo**\
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     Expected output of the procedure is provided in the Figure 5 of the manuscript and also in the supplementary files.\
     Expected run time for demo :\
@@ -25,7 +25,7 @@
         Steps 10-12, Application of the model to analyze shapes across conditions, 1-5 mins\
         Total, steps 1-12, complete VAMPIRE analysis, 8-23 mins
         
-**4. Instructions for use**
+**4. Instructions for use**\
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
 

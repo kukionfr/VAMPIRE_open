@@ -9,8 +9,9 @@
     
 **2. Installation Guide**\
     **Executable file option:**\
-    No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
-    Executable file is named "vampire.exe", which can be found in Supplementary Data 2.\
+    No installation required. Download the executable file from https://github.com/kukionfr/VAMPIRE_open/releases/download/executable/vampire.exe \
+    Open the executable file to launch the graphic user interface (GUI) of the software\
+    Executable file "vampire.exe" can be also found in Supplementary Data 2 of manuscript.\
 **PIP installation option:**\
     Type the following into command prompt window to install vampireanlysis on PYPI (the Python package index) using pip installer
     

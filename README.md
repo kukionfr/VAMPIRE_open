@@ -3,15 +3,18 @@
 
 1. System requirements\
     OS : Windows 10 (64 bit) Version 1909\
-    Software is not compatible with older versions of Windows nor Mac.\
+    Software is not compatible with older versions of Windows.\
+    Mac OS is not officially supported, but it may work.\
     Non-standard hardware is not required.
     
 2. Installation Guide\
     Executable file option:\
+    \
     No installation required. Open the executable file to launch the graphic user interface (GUI) of the software\
     Executable file is named "vampire.exe", which can be found in Supplementary Data 2.
     
     PIP installation option:\
+    \
     pip install vampireanalysis
     
 3. Demo

@@ -4,14 +4,14 @@
 **1. System requirements**\
     OS : Windows 10 (64 bit) Version 1909\
     Software is not compatible with older versions of Windows.\
-    Mac OS is not officially supported, but it may work.\
+    Mac OS is not officially supported, but it may work when installed using pip.\
     Non-standard hardware is not required.
     
 **2. Installation Guide**\
     **Executable file option:**\
     No installation required. Download the executable file from https://github.com/kukionfr/VAMPIRE_open/releases/download/executable/vampire.exe \
     Open the executable file to launch the graphic user interface (GUI) of the software\
-    Executable file "vampire.exe" can be also found in Supplementary Data 2 of manuscript.\
+
 **PIP installation option:**\
     Type the following into command prompt window to install vampireanlysis on PYPI (the Python package index) using pip installer
     
@@ -34,7 +34,7 @@ To launch the GUI, type "vampire" into command prompt window.
     By following the Procedure section, the users can reproduce the expected output data provided in the supplementary files.
 
 **5. Code functionality**\
-    The source code can be installed using pip: “pip install vampireanalysis” for Python 3.7 or later.\
+    The source code can be installed using pip: “pip install vampireanalysis” for Python 3.6 or later.\
     After installation using pip, type “vampire” in the command window prompt to launch the GUI.\
     
     

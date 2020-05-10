@@ -190,6 +190,7 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     ax22.set_xlabel('Shape mode', fontsize=15, fontweight='bold')
     # only for paper
     ax22.set_ylim([0,np.max(height)+5])
+
     ax22.set_title('Shape mode distribution (N=' + str(len(IDX_dist)) + ')',fontsize=18, fontweight='bold')
     bartick = map(str, np.arange(int(np.max(IDX) + 1))[1:])
     ax22.set_xticks((np.arange(np.max(IDX) + 1) / 2)[1:])

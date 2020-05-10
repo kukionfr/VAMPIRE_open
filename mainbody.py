@@ -74,8 +74,7 @@ def mainbody(build_model, csv, entries, outpth=None, clnum=None, progress_bar=No
             clnum = vampire_model['clnum']
             pcnum = vampire_model['pcnum']
             IDX, IDX_dist, vampire_model = clusterSM(outpth,score,bdpc,clnum, pcnum, vampire_model,build_model,condition[setidx],setID[setidx],entries)
-            tag = UI['tag'][setidx]
-            update_csv(IDX, IDX_dist, tag, setpath)
+            update_csv(IDX, IDX_dist, tag[setidx], setpath)
             progress_bar["value"] = progress + 100 * (setidx + 1) / len(setpaths)
             progress_bar.update()
         entries['Status'].delete(0, END)

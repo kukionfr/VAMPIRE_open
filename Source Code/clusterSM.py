@@ -96,7 +96,8 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
         # why amin? D shows list of distance to cluster centers.
         IDX = np.argmin(D, axis=1)
         IDX_dist = np.around(np.amin(D, axis=1), decimals=2)
-    goodness = special.softmax(D)
+    goodness = special.softmax(-D,axis=1)
+    goodness = np.around(goodness,decimals=4)
     offx, offy = np.meshgrid(range(clnum), [0])
     offx = np.multiply(offx, 1) + 1
     offx = offx[0] * 1 - 0.5
@@ -132,9 +133,12 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     plt.axis('equal')
     plt.axis('off')
     IDXsort = np.zeros(len(IDX))
+    goodnessc = deepcopy(goodness)
     for kss in range(clnum):
         c88 = IDX == int(dendidx[kss])
         IDXsort[c88] = kss
+    for idx,dend in enumerate(dendidx):
+        goodnessc[:,int(dend)] = goodness[:,idx]
     IDX = deepcopy(IDXsort)
     fig922, ax922 = plt.subplots(figsize=(17, 2))
     fig291, ax291 = plt.subplots(figsize=(6, 3))
@@ -210,6 +214,6 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     plt.close('all')
     end = time.time()
     print('For cluster, elapsed time is ' + str(end - start) + 'seconds...')
-    return IDX, IDX_dist, VamModel, goodness
+    return IDX, IDX_dist, VamModel, goodnessc, D
 
 

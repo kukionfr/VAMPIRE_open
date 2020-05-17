@@ -2,6 +2,7 @@
 import math
 # external libraries
 import numpy as np
+from scipy import linalg
 
 
 def reg_bd_svd(bd0=None):
@@ -14,7 +15,10 @@ def reg_bd_svd(bd0=None):
     xi = xi / s
     yi = yi / s
     xiyi = np.append([xi], [yi], axis=0).transpose()
-    u, S, rm = np.linalg.svd(xiyi, full_matrices=True)
+    u, S, rm = linalg.svd(xiyi)
+    # this is a quick fix
+    if np.isnan(rm).any():
+        rm[rm!=1]=1
     xynew = np.dot(xiyi, rm.transpose())
     xynew = xynew.transpose()
     yc = xynew[1].mean()

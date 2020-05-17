@@ -40,7 +40,7 @@ def mainbody(build_model, csv, entries, outpth=None, clnum=None, progress_bar=No
         progress_bar["value"] = progress + 20
         progress_bar.update()
         pcnum = None # none is 20 by default
-        IDX, IDX_dist, vampire_model, _ = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model, build_model, None, None, entries)
+        IDX, IDX_dist, vampire_model, _, _ = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model, build_model, None, None, entries)
         progress_bar["value"] = progress + 25
         progress_bar.update()
         modelname = entries['Model name'].get()
@@ -76,12 +76,12 @@ def mainbody(build_model, csv, entries, outpth=None, clnum=None, progress_bar=No
             pcnum = vampire_model['pcnum']
 
             if experimental:
-                IDX, IDX_dist, vampire_model, goodness = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
+                IDX, IDX_dist, vampire_model, goodness, D = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
                                                                    build_model, condition[setidx], setID[setidx],
                                                                    entries)
-                update_csv(IDX, IDX_dist, tag[setidx], setpath, goodness=goodness)
+                update_csv(IDX, IDX_dist, tag[setidx], setpath, goodness=goodness, D=D)
             else:
-                IDX, IDX_dist, vampire_model, _ = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
+                IDX, IDX_dist, vampire_model, _, _ = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
                                                                    build_model, condition[setidx], setID[setidx],
                                                                    entries)
                 update_csv(IDX, IDX_dist, tag[setidx], setpath)

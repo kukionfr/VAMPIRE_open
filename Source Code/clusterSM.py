@@ -81,7 +81,7 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
         if isinstance(clnum, str):
             clnum = int(clnum)
 
-        kmeans = KMeans(n_clusters=clnum, init='k-means++', n_init=3, max_iter=300,n_jobs=-1).fit(
+        kmeans = KMeans(n_clusters=clnum, init='k-means++', n_init=3, max_iter=300).fit(
             cmsn_Norm)  # init is plus,but orginally cluster, not available in sklearn
         C = kmeans.cluster_centers_
         VamModel['C'] = C
@@ -134,11 +134,13 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     plt.axis('off')
     IDXsort = np.zeros(len(IDX))
     goodnessc = deepcopy(goodness)
+    DD = deepcopy(D)
     for kss in range(clnum):
         c88 = IDX == int(dendidx[kss])
         IDXsort[c88] = kss
     for idx,dend in enumerate(dendidx):
         goodnessc[:,int(dend)] = goodness[:,idx]
+        DD[:,int(dend)] = D[:,idx]
     IDX = deepcopy(IDXsort)
     fig922, ax922 = plt.subplots(figsize=(17, 2))
     fig291, ax291 = plt.subplots(figsize=(6, 3))
@@ -214,6 +216,6 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     plt.close('all')
     end = time.time()
     print('For cluster, elapsed time is ' + str(end - start) + 'seconds...')
-    return IDX, IDX_dist, VamModel, goodnessc, D
+    return IDX, IDX_dist, VamModel, goodnessc, DD
 
 

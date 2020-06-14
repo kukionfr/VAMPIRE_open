@@ -1,3 +1,3 @@
 set ID,condition,set location,tag,note
-1,MEF_LMNA--,C:\Users\kuki\PycharmProjects\VAMPIRE_open_edit\Example Dataset\Example segmented images\MEF_LMNA--,c1,lamin A knockout
-2,MEF_wildtype,C:\Users\kuki\PycharmProjects\VAMPIRE_open_edit\Example Dataset\Example segmented images\MEF_wildtype,c1,wildtype control
+1,MEF_LMNA--,C:\Users\kyuha\PycharmProjects\VAMPIRE_open\Example Dataset\Example segmented images\MEF_LMNA--,c1,lamin A knockout
+2,MEF_wildtype,C:\Users\kyuha\PycharmProjects\VAMPIRE_open\Example Dataset\Example segmented images\MEF_wildtype,c1,wildtype control

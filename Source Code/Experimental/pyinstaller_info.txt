@@ -1,0 +1,38 @@
+Pyinstaller Note
+
+Error 0:
+no module named 'blahblahblah'
+
+Solution 0:
+add hidden-imports
+pkg_resources.py2_warn
+sklearn.neighbors.typedefs
+sklearn.utils._cython_blas
+sklearn.neighbors.quad_tree
+sklearn.tree._criterion
+sklearn.tree._utils
+
+Error 1:
+No module named 'win32com'
+
+Solution 1:
+pip install pypiwin32
+
+Error 2:
+Failed to load dynlib/dll 'vcomp140.dll'
+
+Solution 2:
+Install Visual C++ redistributable
+
+Error 3 (possibly okay to ignore):
+91236 WARNING: Hidden import "sklearn.utils.sparsetools._graph_validation" not found!
+91245 WARNING: Hidden import "sklearn.utils.sparsetools._graph_tools" not found!
+91261 WARNING: Hidden import "sklearn.utils.lgamma" not found!
+
+Solution 3:
+add this line to "hook-sklearn.metrics.cluster.py" :
+from PyInstaller.utils.hooks import collect_data_files
+datas = collect_data_files('sklearn')
+
+
+

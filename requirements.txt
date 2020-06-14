@@ -8,4 +8,4 @@ dask==2.18.1
 scipy==1.4.1
 scikit-image==0.17.2
 
-# matplotlib env variable not supported in pyinstapip listller since 3.1p
+# matplotlib env variable not supported in pyinstaller, use matplotlib==3.0.2 when packaging.

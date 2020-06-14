@@ -76,7 +76,7 @@ def mainbody(build_model, csv, entries, outpth=None, clnum=None, progress_bar=No
             pcnum = vampire_model['pcnum']
 
             if experimental:
-                IDX, IDX_dist, vampire_model, goodness, D = clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
+                IDX, IDX_dist, vampire_model, goodness, D= clusterSM(outpth, score, bdpc, clnum, pcnum, vampire_model,
                                                                    build_model, condition[setidx], setID[setidx],
                                                                    entries)
                 update_csv(IDX, IDX_dist, tag[setidx], setpath, goodness=goodness, D=D)

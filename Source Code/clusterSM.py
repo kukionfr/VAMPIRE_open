@@ -25,7 +25,7 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     if not isinstance(condition, str):
         condition = str(condition)
     if BuildModel:
-        figdst = os.path.join(*[outpth, entries['Model name'].get(), 'Example model figures'])
+        figdst = os.path.join(*[outpth, entries['Model name'].get(), 'model figures'])
     else:
         figdst = os.path.join(outpth, 'Result based on ' + os.path.splitext(os.path.basename(entries['Model to apply'].get()))[0])
     if not os.path.exists(figdst):
@@ -133,14 +133,15 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
     plt.axis('equal')
     plt.axis('off')
     IDXsort = np.zeros(len(IDX))
-    goodnessc = deepcopy(goodness)
-    DD = deepcopy(D)
+
     for kss in range(clnum):
         c88 = IDX == int(dendidx[kss])
         IDXsort[c88] = kss
+    DD = deepcopy(D)
+    goodnessc = deepcopy(goodness)
     for idx,dend in enumerate(dendidx):
-        goodnessc[:,int(dend)] = goodness[:,idx]
-        DD[:,int(dend)] = D[:,idx]
+        goodnessc[:,idx] = goodness[:,int(dend)]
+        DD[:,idx] = D[:,int(dend)]
     IDX = deepcopy(IDXsort)
     fig922, ax922 = plt.subplots(figsize=(17, 2))
     fig291, ax291 = plt.subplots(figsize=(6, 3))

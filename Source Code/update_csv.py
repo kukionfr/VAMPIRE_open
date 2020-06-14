@@ -11,7 +11,6 @@ def update_csv(idx, fit, tag, setpath, **kwargs):
 		obj_ledger = pd.read_csv(os.path.join(setpath, datasheet))
 		obj_ledger['Shape mode'] = pd.Series(idx)
 		obj_ledger['Distance from cluster center'] = pd.Series(fit)
-		obj_ledger['Shape mode goodness of fit'] = pd.Series(kwargs['goodness'])
 		obj_ledger.to_csv(os.path.join(setpath, datasheet), index=False)
 	else:
 		d = {'Shape mode': pd.Series(idx), 'Distance from cluster center': pd.Series(fit)}

@@ -43,14 +43,14 @@ def bdreg(B, N=None, VamModel=None, BuildModel=None):
         VamModel['bdrn'] = bdrn
     else:
         bdrn = VamModel['bdrn']
-    bnreg_a = deepcopy(B)
-    # bnreg = deepcopy(B)
 
+    # bnreg = deepcopy(B)
     # for ktt in range(kll):  # speed : 60 sec
     #     bnreg[ktt] = reg_bd3(bnreg.loc[ktt], bdrn)
     #     bdpc[ktt] = np.append(bnreg[ktt][1], bnreg[ktt][0])
 
     start = time.time()
+    bnreg_a = deepcopy(B)
     bnreg2 = Parallel(n_jobs=num_cores)(delayed(reg_bd3)(bnreg_a.loc[kk], bdrn) for kk in range(kll))
     bdpc2 = [np.append(bnreg2[i][1],bnreg2[i][0]) for i in range(len(bnreg2))]
     bdpc2 = np.array(bdpc2)

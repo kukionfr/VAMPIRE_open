@@ -81,7 +81,7 @@ def clusterSM(outpth, score, bdpc, clnum, pcnum=None, VamModel=None, BuildModel=
         if isinstance(clnum, str):
             clnum = int(clnum)
 
-        kmeans = KMeans(n_clusters=clnum, init='k-means++', n_init=3, max_iter=300,n_jobs=-1).fit(
+        kmeans = KMeans(n_clusters=clnum, init='k-means++', n_init=3, max_iter=300).fit(
             cmsn_Norm)  # init is plus,but orginally cluster, not available in sklearn
         C = kmeans.cluster_centers_
         VamModel['C'] = C

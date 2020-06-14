@@ -15,6 +15,9 @@ def reg_bd_svd(bd0=None):
     yi = yi / s
     xiyi = np.append([xi], [yi], axis=0).transpose()
     u, S, rm = np.linalg.svd(xiyi, full_matrices=True)
+    # this is a quick fix
+    if np.isnan(rm).any():
+        rm[rm!=1]=1
     xynew = np.dot(xiyi, rm.transpose())
     xynew = xynew.transpose()
     yc = xynew[1].mean()

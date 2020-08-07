@@ -60,4 +60,4 @@ pillow==7.2.0\
 opencv-python==4.3.0.36\
 dask==2.22.0\
 scipy==1.5.2\
-scikit-image==0.17.2\
+scikit-image==0.17.2

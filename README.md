@@ -22,8 +22,9 @@ To launch the GUI, type "vampire" into command prompt window.
 **3. Demo**\
     Instructions to run on data can be found in the Procedure section of the manuscript.\
     Sample images to run VAMPIRE can be found in Supplementary Data: https://github.com/kukionfr/VAMPIRE_open/tree/master/Supplementary%20Data \
-    Bigger dataset is also available in these two repositories: \ https://github.com/kukionfr/Aging_human_dermal_fibroblast_nucleus \
-    https://github.com/kukionfr/Micropattern_MEF_LMNA_Image \
+    Bigger dataset is also available in these two repositories:\
+    1. https://github.com/kukionfr/Aging_human_dermal_fibroblast_nucleus \
+    2. https://github.com/kukionfr/Micropattern_MEF_LMNA_Image \
     Expected output of the procedure is provided in the Figure 5 of the manuscript and also in the supplementary files.\
     Expected run time for demo :\
         Step 1-2, Segment cells or nuclei, 5~10 mins\

@@ -41,7 +41,6 @@ To launch the GUI, type "vampire" into command prompt window.
     The source code can be installed using pip: “pip install vampireanalysis” for Python 3.6 or later.\
     After installation using pip, type “vampire” in the command window prompt to launch the GUI.\
     
-    
 •	vampire.py : launch Tk interface for VAMPIRE GUI.\
 •	mainbody.py : read the boundaries of cells or nuclei and process them through three key functions of VAMPIRE analysis: 1. Registration 2. PCA 3. Cluster.\
 •	collect_selected_bstack.py : read the boundaries of cells or nuclei based on the CSV files that contains list of image sets to build or apply the VAMPIRE model.\
@@ -49,5 +48,16 @@ To launch the GUI, type "vampire" into command prompt window.
 •	pca_bdreg.py : apply PCA to the registered boundaries.\
 •	PCA_custom.py  : principal component analysis code.\
 •	clusterSM.py : apply K-means clustering to PCA processed boundaries of cells or nuclei and assign the cluster number label to each cell or nuclei.\
-•	update_csv.py : generate VAMPIRE datasheet based on the assigned cluster label.\
-Codes that are not mentions here belongs to the codes explained. The provided explanation applies to those as well.
+•	update_csv.py : generate VAMPIRE datasheet based on the assigned cluster label\
+Codes that are not mentions here belongs to the codes explained. The provided explanation applies to those as well.\
+
+**Python library dependencies**\
+pandas==1.1.0\
+numpy==1.19.1\
+scikit-learn==0.23.2\
+matplotlib==3.3.0\
+pillow==7.2.0\
+opencv-python==4.3.0.36\
+dask==2.22.0\
+scipy==1.5.2\
+scikit-image==0.17.2\

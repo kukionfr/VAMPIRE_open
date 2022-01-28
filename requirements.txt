@@ -9,3 +9,4 @@ scipy==1.4.1
 scikit-image==0.17.2
 
 # matplotlib env variable not supported in pyinstaller, use matplotlib==3.0.2 when packaging.
+# python 3.8

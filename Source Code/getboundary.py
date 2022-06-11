@@ -91,7 +91,8 @@ def getboundary(csv, progress_bar, entries):
                 except:
                     ar = 0
                 props = [area, perimeter, majoraxis, minoraxis, circularity, ar]
-                fronttag = [imlist[imidx], imidx + 1, objidx + 1]
+                # fronttag = [imlist[imidx], imidx + 1, objidx + 1]
+                fronttag = [imlist[imidx], imidx + 1, lab] # Add image object id
                 registry_item = fronttag + centroid + props
                 registry.append(registry_item)
                 boundarymaster.append(boundary)
